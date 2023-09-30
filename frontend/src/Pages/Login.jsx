@@ -1,9 +1,9 @@
 import { Box, Button, Heading, Input, Text } from "@chakra-ui/react";
 
-const page = () => {
+const Login = () => {
   return (
     <Box textAlign="center">
-      <Heading>Login Page</Heading>
+      <Heading>Login Login</Heading>
       <Box
         w="40%"
         margin="auto"
@@ -48,4 +48,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Login;
