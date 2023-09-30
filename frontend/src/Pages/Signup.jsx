@@ -1,6 +1,21 @@
 import { Box, Button, Heading, Input, Text } from "@chakra-ui/react";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
-const Signup = () => {
+const page = () => {
+  const [form, setForm] = useState({});
+
+  function handleInput(e) {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  }
+
+  function handleSubmit(e){
+    e.preventDefault();
+    console.log(form)
+  }
+
+
   return (
     <Box textAlign="center">
       <Heading>SignUp Page</Heading>
@@ -12,7 +27,7 @@ const Signup = () => {
         boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px"
         border="1px solid #A2A7A7 "
       >
-        <form>
+        <form onSubmit={handleSubmit}>
           <Box display="flex" justifyContent="space-between">
             <label>
               <Text>Email:</Text>
@@ -22,6 +37,8 @@ const Signup = () => {
               w="60%"
               type="email"
               placeholder="Enter your Email"
+              name="email"
+              onChange={handleInput}
             />
           </Box>
           <Box display="flex" justifyContent="space-between" mt="2rem">
@@ -33,6 +50,8 @@ const Signup = () => {
               w="60%"
               type="password"
               placeholder="Enter your Password"
+              onChange={handleInput}
+              name="password"
             />
           </Box>
           <Box display="flex" justifyContent="space-between" mt="2rem">
@@ -44,10 +63,12 @@ const Signup = () => {
               w="60%"
               type="password"
               placeholder="Enter your Password"
+              onChange={handleInput}
+              name="confirm password"
             />
           </Box>
           <Box mt="2rem">
-            <Button border="1px solid #A2A7A7 ">SignUp</Button>
+            <Button type="submit" border="1px solid #A2A7A7 ">SignUp</Button>
           </Box>
         </form>
       </Box>
@@ -59,4 +80,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default page;

@@ -23,7 +23,6 @@ app.get("", (req, res) => {
 app.listen(8080, async () => {
   try {
     console.log("Server is Running");
-    console.log(new Date())
     await connection
       .then(() => {
         console.log("DB is Connected");
