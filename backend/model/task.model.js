@@ -10,9 +10,9 @@ const taskSchema = mongoose.Schema({
     require: true,
   },
   status: {
-    type: Boolean,
+    type: String,
     require: true,
-    default:false
+    default:'Pending'
   },
   priority: {
     type: String,
@@ -27,7 +27,7 @@ const taskSchema = mongoose.Schema({
     type:String,
     require: true
   },
-  user: { type: mongoose.Schema.Types.ObjectId, require:true },
+  userId: { type: mongoose.Schema.Types.ObjectId, require:true },
 });
 
 const taskModel = mongoose.model("task", taskSchema);

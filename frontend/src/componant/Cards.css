@@ -1,0 +1,36 @@
+
+span{
+    font-weight: bolder;
+    background-color: gainsboro;
+    padding: 5px;
+    margin-left: 0.5rem;
+}
+
+.High{
+    color: red;
+}
+
+.low{
+    color: rgb(20, 142, 9);
+}
+
+.Medium{
+    color: orange;
+}
+
+
+.Pending{
+    color: red;
+    background-color: rgb(237, 198, 198);
+}
+
+.Active{
+    color: orange;
+    background-color: rgb(235, 221, 195);
+}
+
+.Completed{
+    color: rgb(38, 168, 26);
+    background-color: rgb(217, 235, 192);
+
+}

@@ -1,10 +1,17 @@
 import React, { useState } from "react";
-import { Box, Button, Heading, Input, Text } from "@chakra-ui/react";
+import { Box, Button, Heading, Input, Text, useToast } from "@chakra-ui/react";
+import { loginUser } from "../utils/loginUser";
+import ShowToast from "../componant/Toast";
+import { useDispatch } from "react-redux";
+import { setAuth, setToken } from "../redux/appReducer";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const dispatch = useDispatch();
+  const toast = useToast();
+  const navigate = useNavigate();
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -13,8 +20,17 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    let data = await loginUser({ email, password });
+    if (data?.token) {
+      ShowToast(toast, "Login", data?.message, "success");
+      dispatch(setAuth());
+      dispatch(setToken(data.token))
+      navigate('/dashboard')
+    } else {
+      ShowToast(toast, "Login", data?.response.data.message, "error");
+    }
   };
 
   return (

@@ -26,7 +26,6 @@ loginRoute.post("/", async (req, res) => {
     const token = jwt.sign({ userId: user._id }, "secretKey", {
       expiresIn: "1day",
     });
-
     res.status(200).json({ message: "Login successful", token });
   } catch (error) {
     res.status(500).json({ error: error.message });

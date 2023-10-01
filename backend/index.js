@@ -4,10 +4,11 @@ const connection = require("./mongoConnection");
 const taskRoute = require("./route/task.route");
 const userRouter = require("./route/user.route");
 const { loginRoute } = require("./route/login.route");
-
+const cors = require('cors')
 require("dotenv").config();
 
 const app = express();
+    app.use(cors())
     app.use(express.json())
 
     app.use("/task",taskRoute)

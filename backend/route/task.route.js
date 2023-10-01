@@ -7,7 +7,6 @@ taskRoute.use(verifyToken)
 
 // Create a new task
 taskRoute.post('/', async (req, res) => {
-
   try {
     const task = new taskModel({...req.body});
     await task.save();
@@ -21,7 +20,9 @@ taskRoute.post('/', async (req, res) => {
 taskRoute.get('/:userId', async (req, res) => {
   try {
     const {userId} = req.params
-    const tasks = await taskModel.find({ user: userId });
+    
+    const tasks = await taskModel.find({ userId});
+
     res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ error: error.message });
