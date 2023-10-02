@@ -10,7 +10,7 @@ taskRoute.post('/', async (req, res) => {
   try {
     const task = new taskModel({...req.body});
     await task.save();
-    res.status(201).json(task);
+    res.status(201).json({message: 'Task Created Successfully',task});
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -53,7 +53,7 @@ taskRoute.patch('/:id', async (req, res) => {
     if (!task) {
       return res.status(404).json({ message: 'Task not found' });
     }
-    res.status(200).json(task);
+    res.status(200).json({message:'Task Updated',task});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

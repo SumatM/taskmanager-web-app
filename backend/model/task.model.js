@@ -12,22 +12,26 @@ const taskSchema = mongoose.Schema({
   status: {
     type: String,
     require: true,
-    default:'Pending'
+    default: "Pending",
   },
   priority: {
     type: String,
     require: true,
-    default:'low'
+    default: "low",
   },
   startTime: {
     type: String,
     require: true,
   },
-  endTime:{
-    type:String,
-    require: true
+  endTime: {
+    type: String,
+    require: true,
   },
-  userId: { type: mongoose.Schema.Types.ObjectId, require:true },
+  gCalendarLink: {
+    type: String,
+    default: "",
+  },
+  userId: { type: mongoose.Schema.Types.ObjectId, require: true },
 });
 
 const taskModel = mongoose.model("task", taskSchema);

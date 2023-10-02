@@ -14,6 +14,10 @@ span{
     color: rgb(20, 142, 9);
 }
 
+.Low{
+    color: rgb(20, 142, 9);
+}
+
 .Medium{
     color: orange;
 }
@@ -33,4 +37,14 @@ span{
     color: rgb(38, 168, 26);
     background-color: rgb(217, 235, 192);
 
+}
+
+.selectTag{
+    padding: 5px;
+    margin-left: 0.5rem;
+}
+
+.inputTag{
+    padding: 5px;
+    margin-left: 0.5rem;
 }

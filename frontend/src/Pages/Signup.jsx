@@ -1,23 +1,31 @@
-import { Box, Button, Heading, Input, Text } from "@chakra-ui/react";
+import { Box, Button, Heading, Input, Text, useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-
+import { signupUser } from "../utils/signupUser";
+import ShowToast from '../componant/Toast'
 const page = () => {
   const [form, setForm] = useState({});
-
+  const toast = useToast();
   function handleInput(e) {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   }
 
-  function handleSubmit(e){
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log(form)
+    let data = await signupUser(form);
+    console.log(data);
+    console.log(!data?.response?.data)
+    if(!data?.response?.data){
+      ShowToast(toast,"",data.message,'success')
+    }else{
+      console.log('here')
+      ShowToast(toast,"",data.response.data.message,'error')
+    }
   }
 
-
   return (
-    <Box textAlign="center">
+    <Box textAlign="center" >
       <Heading>SignUp Page</Heading>
       <Box
         w="40%"
@@ -68,7 +76,9 @@ const page = () => {
             />
           </Box>
           <Box mt="2rem">
-            <Button type="submit" border="1px solid #A2A7A7 ">SignUp</Button>
+            <Button type="submit" border="1px solid #A2A7A7 ">
+              SignUp
+            </Button>
           </Box>
         </form>
       </Box>

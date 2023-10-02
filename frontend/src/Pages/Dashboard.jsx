@@ -6,18 +6,21 @@ import {
   Input,
   Select,
   Text,
+  Toast,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setInitialSlots, setSlot } from "../redux/appReducer";
 import { postTask } from "../utils/postTask";
-import { convertDateAndTime } from "../utils/conversionFunctions";
 import { getTaskList } from "../utils/getTasks";
 import { Cards } from "../componant/Cards";
+import ShowToast from "../componant/Toast";
 
 const Dashboard = () => {
   const data = useSelector((e) => e.appStoreReducer);
   const dispatch = useDispatch();
+  const toast = useToast();
 
   const [startTime, setStartTime] = useState({ date: "", time: "" });
 
@@ -32,7 +35,7 @@ const Dashboard = () => {
 
   function handleInputForEndTime(e) {
     const { name, value } = e.target;
-    setEndTime({ ...startTime, [name]: value });
+    setEndTime({ ...endTime, [name]: value });
   }
 
   function handleInput(e) {
@@ -40,31 +43,45 @@ const Dashboard = () => {
     setForm({ ...form, [name]: value });
   }
 
-  function bookSlot(e) {
+  async function bookSlot(e) {
     e.preventDefault();
-    dispatch(
-      setSlot({
-        startTime: `${startTime.date}T${startTime.time}:00`,
-        endTime: `${endTime.date}T${endTime.time}:00`,
-        ...form,
-      })
-    );
-    postTask({
-      startTime: `${startTime.date}T${startTime.time}:00`,
-      endTime: `${endTime.date}T${endTime.time}:00`,
+    await postTask({
+      startTime: `${startTime.date}T${startTime.time}`,
+      endTime: `${endTime.date}T${endTime.time}`,
       ...form,
-    });
+    })
+      .then((res) => {
+        console.log(res);
+        ShowToast(toast, "Create New Task", res.message, "success");
+        dispatch(
+          setSlot({
+            startTime: `${startTime.date}T${startTime.time}`,
+            endTime: `${endTime.date}T${endTime.time}`,
+            ...form,
+            _id:res.task._id
+          })
+        );
+      })
+      .catch((err) => {
+        ShowToast(
+          toast,
+          "Create New Task",
+          data?.response.data.message,
+          "error"
+        );
+        // console.log(err);
+      });
   }
 
-  useEffect( () => {
-   async function fetchSlots(){
-    let data = await getTaskList();
-   dispatch(setInitialSlots(data))
-   }
-   fetchSlots()
+  useEffect(() => {
+    async function fetchSlots() {
+      let data = await getTaskList();
+      dispatch(setInitialSlots(data));
+    }
+    fetchSlots();
   }, []);
 
-  console.log(data)
+  console.log(data);
 
   return (
     <Box textAlign="center" pb="2rem">
@@ -160,7 +177,6 @@ const Dashboard = () => {
               Status:
             </Text>
             <Select name="status" required onChange={handleInput}>
-              <option>Choose Status</option>
               <option>Pending</option>
               <option>Active</option>
               <option>Completed</option>
@@ -172,7 +188,6 @@ const Dashboard = () => {
               Priority:
             </Text>
             <Select required name="priority" onChange={handleInput}>
-              <option>Choose Priority Level</option>
               <option>Low</option>
               <option>Medium</option>
               <option>High</option>
@@ -188,10 +203,8 @@ const Dashboard = () => {
       <Box>
         <Heading>Booked Time Slots</Heading>
         <Box fontWeight="500">
-          {data?.slots.map((item, index) => {
-            return (
-              <Cards key={index} {...item}/>
-            );
+          {data?.slots?.map((item, index) => {
+            return <Cards key={index} {...item} />;
           })}
         </Box>
       </Box>

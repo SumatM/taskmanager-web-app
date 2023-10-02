@@ -1,11 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-let appData = JSON.parse(localStorage.getItem('appData'))
-
+let appData = JSON.parse(localStorage.getItem("appData"));
 
 const appReducer = createSlice({
   name: "appData",
-  initialState:  { slots: [], theme: "light", isAuth: false, token: "" ,...appData},
+  initialState: {
+    slots: [],
+    theme: "light",
+    isAuth: false,
+    token: "",
+    ...appData,
+  },
   reducers: {
     setSlot: (state, action) => {
       state.slots.push(action.payload);
@@ -13,14 +18,31 @@ const appReducer = createSlice({
     setInitialSlots: (state, action) => {
       state.slots = action.payload;
     },
-    setAuth :(state,action)=>{
-        state.isAuth = true;
+    setAuth: (state, action) => {
+      state.isAuth = true;
     },
-    setToken:(state,action)=>{
-        state = {...state,token:action.payload}
+    setToken: (state, action) => {
+      state = { ...state, token: action.payload };
     },
+    setupdatedSlots: (state, action) => {
+      const id = action.payload._id;
+      let newSlots = state.slots.map((item) => {
+
+        return item._id == id ? action.payload : item;
+      });
+      state.slots = newSlots;
+    },
+    deleteSlot:(state,action)=>{
+      const id = action.payload
+      let newSlots = state.slots.filter((item) => {
+
+        return item._id !== id 
+      });
+      state.slots = newSlots;
+    }
   },
 });
 
 export default appReducer.reducer;
-export const { setSlot, setInitialSlots,setAuth,setToken } = appReducer.actions;
+export const { setSlot, setInitialSlots, setAuth, setToken, setupdatedSlots,deleteSlot } =
+  appReducer.actions;
