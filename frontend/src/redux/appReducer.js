@@ -9,6 +9,7 @@ const appReducer = createSlice({
     theme: "light",
     isAuth: false,
     token: "",
+    userId : "",
     ...appData,
   },
   reducers: {
@@ -23,6 +24,9 @@ const appReducer = createSlice({
     },
     setToken: (state, action) => {
       state = { ...state, token: action.payload };
+    },
+    setLogout : (state,action)=>{
+      state.isAuth = false
     },
     setupdatedSlots: (state, action) => {
       const id = action.payload._id;
@@ -44,5 +48,5 @@ const appReducer = createSlice({
 });
 
 export default appReducer.reducer;
-export const { setSlot, setInitialSlots, setAuth, setToken, setupdatedSlots,deleteSlot } =
+export const { setSlot, setInitialSlots, setAuth, setToken, setupdatedSlots,deleteSlot,setLogout } =
   appReducer.actions;

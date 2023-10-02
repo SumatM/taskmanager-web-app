@@ -17,9 +17,9 @@ taskRoute.post('/', async (req, res) => {
 });
 
 // Get all tasks
-taskRoute.get('/:userId', async (req, res) => {
+taskRoute.get('/', async (req, res) => {
   try {
-    const {userId} = req.params
+    const {userId} = req.body
     
     const tasks = await taskModel.find({ userId});
 

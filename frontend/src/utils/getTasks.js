@@ -1,15 +1,12 @@
 import axios from "axios";
 
 let baseURL = "http://localhost:8080";
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTE3ODc4NzFkNDkyYjA2YTZmNDY1MmMiLCJpYXQiOjE2OTYxODE5NTMsImV4cCI6MTY5NjI2ODM1M30.I9UTQRludMHJjKtlPXaq9zhvVPSoHMmzVdSxoYtIuCc";
 
-const userId = '651787871d492b06a6f4652c'
 
-export async function getTaskList() {
-    console.log(`${baseURL}/task/${userId}`)
+export async function getTaskList(token) {
+    console.log(`${baseURL}/task`)
   try {
-    const response = await axios.get(`${baseURL}/task/${userId}`, {
+    const response = await axios.get(`${baseURL}/task`, {
       headers: {
         applicationType: "json",
         Authorization: `bearer ${token}`,

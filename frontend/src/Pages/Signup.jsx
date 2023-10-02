@@ -1,11 +1,19 @@
 import { Box, Button, Heading, Input, Text, useToast } from "@chakra-ui/react";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+
 import { signupUser } from "../utils/signupUser";
-import ShowToast from '../componant/Toast'
-const page = () => {
-  const [form, setForm] = useState({});
+import ShowToast from "../componant/Toast";
+import { useNavigate } from "react-router-dom";
+
+const Signup = () => {
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const toast = useToast();
+  const navigate = useNavigate();
+
   function handleInput(e) {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
@@ -14,24 +22,39 @@ const page = () => {
   async function handleSubmit(e) {
     e.preventDefault();
     let data = await signupUser(form);
-    console.log(data);
-    console.log(!data?.response?.data)
-    if(!data?.response?.data){
-      ShowToast(toast,"",data.message,'success')
-    }else{
-      console.log('here')
-      ShowToast(toast,"",data.response.data.message,'error')
+    if (!data?.response?.data) {
+      ShowToast(toast, "", data.message, "success");
+      setForm({ email: "", password: "", confirmPassword: "" });
+      navigate("/");
+    } else {
+      ShowToast(toast, "", data.response.data.message, "error");
     }
   }
 
+  function handleCallbackResponse(response) {
+    console.log(response);
+  }
+
+  useEffect(() => {
+    /* global google */
+    google.accounts.id.initialize({
+      client_id: "",
+      callback: handleCallbackResponse,
+    });
+
+    google.accounts.id.renderButton(document.getElementById("signInDiv"), {
+      theme: "outline",
+      size: "larger",
+    });
+  }, []);
+
   return (
-    <Box textAlign="center" >
-      <Heading>SignUp Page</Heading>
+    <Box textAlign="center" pb="2rem">
       <Box
         w="40%"
         margin="auto"
-        padding="3rem"
-        mt="2rem"
+        padding="2rem"
+        mt="0.5rem"
         boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px"
         border="1px solid #A2A7A7 "
       >
@@ -47,6 +70,8 @@ const page = () => {
               placeholder="Enter your Email"
               name="email"
               onChange={handleInput}
+              value={form.email}
+              required
             />
           </Box>
           <Box display="flex" justifyContent="space-between" mt="2rem">
@@ -60,6 +85,8 @@ const page = () => {
               placeholder="Enter your Password"
               onChange={handleInput}
               name="password"
+              required
+              value={form.password}
             />
           </Box>
           <Box display="flex" justifyContent="space-between" mt="2rem">
@@ -72,7 +99,9 @@ const page = () => {
               type="password"
               placeholder="Enter your Password"
               onChange={handleInput}
-              name="confirm password"
+              name="confirmPassword"
+              required
+              value={form.confirmPassword}
             />
           </Box>
           <Box mt="2rem">
@@ -81,13 +110,15 @@ const page = () => {
             </Button>
           </Box>
         </form>
+        <Box m="1rem 0">
+          <Text fontWeight="bold">Or</Text>
+        </Box>
+        <Box>
+          <Button id="signInDiv"></Button>
+        </Box>
       </Box>
-      <Box m="1rem 0">
-        <Text fontWeight="bold">Or</Text>
-      </Box>
-      <Box>Login with Google</Box>
     </Box>
   );
 };
 
-export default page;
+export default Signup;

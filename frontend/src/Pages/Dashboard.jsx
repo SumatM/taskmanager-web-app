@@ -18,7 +18,7 @@ import { Cards } from "../componant/Cards";
 import ShowToast from "../componant/Toast";
 
 const Dashboard = () => {
-  const data = useSelector((e) => e.appStoreReducer);
+  const tasks = useSelector((e) => e.appStoreReducer);
   const dispatch = useDispatch();
   const toast = useToast();
 
@@ -66,7 +66,7 @@ const Dashboard = () => {
         ShowToast(
           toast,
           "Create New Task",
-          data?.response.data.message,
+          tasks?.response.tasks.message,
           "error"
         );
         // console.log(err);
@@ -75,13 +75,14 @@ const Dashboard = () => {
 
   useEffect(() => {
     async function fetchSlots() {
-      let data = await getTaskList();
+      let data = await getTaskList(tasks?.token);
       dispatch(setInitialSlots(data));
     }
     fetchSlots();
   }, []);
 
-  console.log(data);
+  console.log(tasks);
+
 
   return (
     <Box textAlign="center" pb="2rem">
@@ -203,7 +204,7 @@ const Dashboard = () => {
       <Box>
         <Heading>Booked Time Slots</Heading>
         <Box fontWeight="500">
-          {data?.slots?.map((item, index) => {
+          {tasks?.slots?.map((item, index) => {
             return <Cards key={index} {...item} />;
           })}
         </Box>

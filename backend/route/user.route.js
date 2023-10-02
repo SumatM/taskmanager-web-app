@@ -8,9 +8,8 @@ const jwt = require("jsonwebtoken");
 userRouter.post("/", async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    
-    const existingUser = await userModel.findOne({ email });
 
+    const existingUser = await userModel.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'User with this email already exists' });
     }
@@ -33,9 +32,7 @@ userRouter.post("/", async (req, res) => {
 // Get all users
 userRouter.get("/", async (req, res) => {
   try {
-    console.log("hello");
     const users = await userModel.find();
-    console.log(users);
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ error: error.message });

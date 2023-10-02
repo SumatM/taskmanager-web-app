@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Heading, Input, Text, useToast } from "@chakra-ui/react";
 import { loginUser } from "../utils/loginUser";
 import ShowToast from "../componant/Toast";
@@ -26,12 +26,16 @@ const Login = () => {
     if (data?.token) {
       ShowToast(toast, "Login", data?.message, "success");
       dispatch(setAuth());
-      dispatch(setToken(data.token))
-      navigate('/dashboard')
+      dispatch(setToken(data.token));
+      navigate("/dashboard");
     } else {
       ShowToast(toast, "Login", data?.response.data.message, "error");
     }
   };
+
+  console.log(email);
+
+
 
   return (
     <Box textAlign="center">
@@ -78,10 +82,6 @@ const Login = () => {
           </Box>
         </form>
       </Box>
-      <Box m="1rem 0">
-        <Text fontWeight="bold">Or</Text>
-      </Box>
-      <Box>Login with Google</Box>
     </Box>
   );
 };

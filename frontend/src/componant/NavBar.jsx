@@ -1,9 +1,23 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import { setLogout } from "../redux/appReducer";
 
 const NavBar = () => {
   const isAuth = useSelector((s) => s.appStoreReducer)?.isAuth;
+  const navigate = useNavigate()
+  const dispatch  = useDispatch()
+
+  function logout(){
+    localStorage.setItem(
+      "appData",
+      JSON.stringify({ token: "",isAuth:false })
+    );
+    dispatch(setLogout())
+    navigate('/')
+  }
+
+
   return (
     <Box>
       <Flex p="4" alignItems="center" justifyContent="space-between">
@@ -40,7 +54,7 @@ const NavBar = () => {
           >
             Dashboard
           </NavLink>
-          {isAuth ? <NavLink to="/">Logout</NavLink> : ""}
+          {isAuth ? <NavLink onClick={logout}>Logout</NavLink> : ""}
         </Box>
       </Flex>
     </Box>
